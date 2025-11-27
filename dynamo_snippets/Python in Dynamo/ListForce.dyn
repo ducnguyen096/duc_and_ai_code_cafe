@@ -1,0 +1,399 @@
+{
+  "Uuid": "4703a767-0d81-4cd2-a283-fcd90999c181",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "ListForce",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "5;\n1..3..1;",
+      "Id": "34ca7338431543b682a3405410bc13ce",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "617922ee76d847daa685e3f6717d22fd",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "94de024429384be7bea1f576eacedfb7",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "3a6a43e295ca46da8c3906d27e3d8706",
+      "Inputs": [
+        {
+          "Id": "0a4ae0158fad4fc9baddf11e0c2f4f00",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "93a5359a2d994f46948a56d609f150e5",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "ef7d7874bf974e3ba9b52e4c08d7fcef",
+      "Inputs": [
+        {
+          "Id": "c643fe0610d34c1db564a78b074e569b",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "83028f953a92494882a7481236a53f73",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "input = IN[0]\r\ncheck = isinstance(input, list)\r\n\r\nif check:\r\n\tresult = input\r\nelse:\r\n\tresult = [input]\r\nOUT = result",
+      "VariableInputPorts": true,
+      "Id": "b4dc24de5ee047848c82ed4f20c3348d",
+      "Inputs": [
+        {
+          "Id": "28acd7728f544504862b6aeab504c2ae",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c9b3e85695e249e3b5c68a09f0e0e4a4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "29ac37f4695b4d309fe5740b14ef08d6",
+      "Inputs": [
+        {
+          "Id": "459abb08435f488a815227f79727db17",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "93265bad8d41467e8d3feb0e5b155b45",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "OUT = IN[0] if isinstance(IN[0], list) else [IN[0]]",
+      "VariableInputPorts": true,
+      "Id": "631e603cdf7345eab44dd8b016ee8a08",
+      "Inputs": [
+        {
+          "Id": "355b6dda0c794c5a8db6601478e80e77",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "67ffcd282f6d4fa38168be63e6c1655f",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "def islist(input):\r\n\tresult = isinstance(input, list)\r\n\tresult2 = input if result else [input]\r\n\treturn result2\r\nOUT = islist(IN[0])",
+      "VariableInputPorts": true,
+      "Id": "eb1a31307ec542f1b0ff8a47b3a5d893",
+      "Inputs": [
+        {
+          "Id": "b227f9d2eec843329cc5a5d8d67ce6d3",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ceaf42aa3ad4490680222ebae4231bf0",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "66f4004ba2274baf94564e52bea5a791",
+      "Inputs": [
+        {
+          "Id": "afc6b23d3d684659800ee75973611985",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f834010a801c49de88c283c2e22c12f2",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "617922ee76d847daa685e3f6717d22fd",
+      "End": "b227f9d2eec843329cc5a5d8d67ce6d3",
+      "Id": "8dd333f9257f4c4f97fe68c0810f79d2"
+    },
+    {
+      "Start": "94de024429384be7bea1f576eacedfb7",
+      "End": "c643fe0610d34c1db564a78b074e569b",
+      "Id": "ed532f3eac904ac395d5efec26e75742"
+    },
+    {
+      "Start": "94de024429384be7bea1f576eacedfb7",
+      "End": "28acd7728f544504862b6aeab504c2ae",
+      "Id": "d29be85ab4104e52b56644de79585d34"
+    },
+    {
+      "Start": "94de024429384be7bea1f576eacedfb7",
+      "End": "355b6dda0c794c5a8db6601478e80e77",
+      "Id": "2e3de9f9b5b941b89022d6a5ef09508b"
+    },
+    {
+      "Start": "c9b3e85695e249e3b5c68a09f0e0e4a4",
+      "End": "459abb08435f488a815227f79727db17",
+      "Id": "6c1ba7688df24da29db0e5ea4524c2ab"
+    },
+    {
+      "Start": "67ffcd282f6d4fa38168be63e6c1655f",
+      "End": "0a4ae0158fad4fc9baddf11e0c2f4f00",
+      "Id": "411753b50d744ac3b61991d96b50722b"
+    },
+    {
+      "Start": "ceaf42aa3ad4490680222ebae4231bf0",
+      "End": "afc6b23d3d684659800ee75973611985",
+      "Id": "f76753f9a21047009e0074cd4296e16d"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "34ca7338431543b682a3405410bc13ce",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 117.0,
+        "Y": 244.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "3a6a43e295ca46da8c3906d27e3d8706",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 809.0,
+        "Y": 489.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "ef7d7874bf974e3ba9b52e4c08d7fcef",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 92.0,
+        "Y": 428.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List Force",
+        "Id": "b4dc24de5ee047848c82ed4f20c3348d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": true,
+        "X": 378.0,
+        "Y": 209.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "29ac37f4695b4d309fe5740b14ef08d6",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 941.0,
+        "Y": 302.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List Force 2",
+        "Id": "631e603cdf7345eab44dd8b016ee8a08",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": true,
+        "X": 410.0,
+        "Y": 484.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "List Force 3 Function",
+        "Id": "eb1a31307ec542f1b0ff8a47b3a5d893",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 418.0,
+        "Y": 668.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Watch",
+        "Id": "66f4004ba2274baf94564e52bea5a791",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 757.0,
+        "Y": 688.0
+      }
+    ],
+    "Annotations": [],
+    "X": 173.0,
+    "Y": -61.0,
+    "Zoom": 1.0
+  }
+}

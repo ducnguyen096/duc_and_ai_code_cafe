@@ -1,0 +1,190 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "ViewToSheet",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport clr\r\n\r\nclr.AddReference('RevitNodes')\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\nclr.AddReference('RevitAPI')\r\n\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n# asf\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n# The inputs to this node will be stored as a list in the IN variables.\r\nttb_d = IN[0]\r\nnam_d = IN[1] if isinstance(IN[1], list) else [IN[1]]\r\nnum_d = IN[2] if isinstance(IN[2], list) else [IN[2]]\r\n\r\nsht_d = []\r\n\r\nttb_r = UnwrapElement(ttb_d).Id\r\n# Place your code below this line\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nfor na, nu in zip(nam_d, num_d):\r\n\tsht = ViewSheet.Create(doc, ttb_r)\r\n\tsht.Name = na\r\n\tsht.SheetNumber = nu\r\n\tsht_d.append(sht.ToDSType(False))\r\n#df\r\nTransactionManager.Instance.TransactionTaskDone()\r\n# Assign your output to the OUT variable.\r\nOUT = sht_d",
+      "VariableInputPorts": true,
+      "Id": "aa4326f6e98c4505a3a20dd368f62013",
+      "Inputs": [
+        {
+          "Id": "da24f305f2d84258b3e4bfe915b93a00",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cb2c513b77d14ab6bc9cf015045c6ff1",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "64776cb692e14bd49ab2bc9a658dc7e6",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c26b458b27c2425e8d0d41064ade58a1",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "[\"Sheet9\",\"Sheet12\",\"Sheet23\"];\n[\"2001\",\"2002\",\"2003\"];",
+      "Id": "f65560d2804443dabd73231a8dcf4239",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6afb27c8dc934afbb9ac1475b73c2743",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "82b079a542714f36bf0cf24090bf8183",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "DSRevitNodesUI.FamilyTypes, DSRevitNodesUI",
+      "SelectedIndex": 34,
+      "SelectedString": "E1 30 x 42 Horizontal:E1 30x42 Horizontal",
+      "NodeType": "ExtensionNode",
+      "Id": "a1a6a1e5b84e4e068b7de3e69dd51d7f",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "770b764f6b2a438fa33542c0081c5e94",
+          "Name": "Family Type",
+          "Description": "The selected Family Type",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "All family types available in the document."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6afb27c8dc934afbb9ac1475b73c2743",
+      "End": "cb2c513b77d14ab6bc9cf015045c6ff1",
+      "Id": "c93e1d2969e64d8b8a5febbc5295aa2a"
+    },
+    {
+      "Start": "82b079a542714f36bf0cf24090bf8183",
+      "End": "64776cb692e14bd49ab2bc9a658dc7e6",
+      "Id": "e2730a8c8e4e42ae8acd158e7dd1c10a"
+    },
+    {
+      "Start": "770b764f6b2a438fa33542c0081c5e94",
+      "End": "da24f305f2d84258b3e4bfe915b93a00",
+      "Id": "1445eaed15ad4b788c3ad6d828b7e824"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.6.1.8786",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Create Sheet by Title Block",
+        "Id": "aa4326f6e98c4505a3a20dd368f62013",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 102.0,
+        "Y": 455.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "f65560d2804443dabd73231a8dcf4239",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -375.0,
+        "Y": 556.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Family Types",
+        "Id": "a1a6a1e5b84e4e068b7de3e69dd51d7f",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": -384.0,
+        "Y": 455.0
+      }
+    ],
+    "Annotations": [],
+    "X": 699.0,
+    "Y": -248.0,
+    "Zoom": 1.0
+  }
+}
