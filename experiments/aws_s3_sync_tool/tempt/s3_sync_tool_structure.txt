@@ -1,0 +1,7 @@
+aws_s3_ui/
+│
+├── s3_list.py        # list buckets
+├── s3_delete.py      # delete bucket
+├── s3_sync.py        # sync bucket
+├── ui.py             # Tkinter UI
+└── main.py           # optional entry point
