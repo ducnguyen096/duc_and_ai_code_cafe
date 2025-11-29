@@ -1,0 +1,29 @@
+property_name,property_type
+MEP ID,title
+Room,relation
+Natural,checkbox
+Mechanical,checkbox
+ACH,number
+Rate Value,number
+Rate Unit,select
+Pressure Regime,select
+Smoke Extraction,checkbox
+Summer Internal Temp,number
+Summer RH,number
+Winter Internal Temp,number
+Winter RH,number
+Cooling,number
+Heating,number
+Remark,rich_text
+Ulti,rich_text
+Compair,rich_text
+LPG,checkbox
+Other,rich_text
+Lux,number
+Surface Mounted,number
+Recessed,number
+Emergency,checkbox
+Tel,number
+Data,number
+CCTV,number
+Access,checkbox

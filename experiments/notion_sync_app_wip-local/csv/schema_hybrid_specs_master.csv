@@ -1,0 +1,7 @@
+Property,Type
+Tag,Relation (MEP Equipment)
+Category,Select
+Relation: Specs – Mechanical,Relation
+Relation: Specs – Electrical,Relation
+Relation: Specs – Plumbing,Relation
+Relation: Specs – Fire Protection,Relation

@@ -1,0 +1,16 @@
+Column,Type
+Tag,Text
+Name,Text
+Type,Select
+Location,Text
+Manufacturer,Text
+Model,Text
+Install Date,Date
+Warranty Expiry,Date
+Status,Select
+Criticality,Select
+Assigned Engineer,Person
+Relation: Master Specs,Relation
+Relation: Maintenance Logs,Relation
+Relation: Vendors & Contacts,Relation
+Relation: Documents,Relation

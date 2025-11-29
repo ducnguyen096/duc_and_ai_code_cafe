@@ -1,0 +1,9 @@
+Column,Type
+Floor Finish Type,select
+Floor Elevation (m),number
+Wall Finish Type,select
+Wall Skirting,select
+Ceiling Type,select
+Ceiling Height,number
+Ceiling Clearance,number
+Room,relation

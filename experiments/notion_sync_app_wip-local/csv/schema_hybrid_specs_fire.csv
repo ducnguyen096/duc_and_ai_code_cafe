@@ -1,0 +1,7 @@
+Property,Type
+Tag,Relation (Master Specs)
+Sprinkler Type,Text
+Coverage Area,Number
+Flow Rate,Number
+Pressure,Number
+Certification Standard,Text

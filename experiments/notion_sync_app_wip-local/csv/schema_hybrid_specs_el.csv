@@ -1,0 +1,7 @@
+Property,Type
+Tag,Relation (Master Specs)
+Voltage,Number
+Current,Number
+Power Rating,Number
+Frequency,Number
+IP Rating,Text
