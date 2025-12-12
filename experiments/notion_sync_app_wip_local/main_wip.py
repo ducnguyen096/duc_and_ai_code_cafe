@@ -211,7 +211,7 @@ class App:
         if multi_selects:
             self.prop_combo.current(0)
             print(f"Found {len(multi_selects)} multi-select properties")        
-
+#
     def browse_csv(self):
         path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
         if not path:
@@ -220,43 +220,34 @@ class App:
         self.csv_var.set(path)
         print(f"CSV loaded: {Path(path).name}")
 
-        # AUTO-FILL + SMART SELECT identifier column — works on EVERY CSV you have
         try:
-            with open(path, encoding="utf-8-sig") as f:
-                reader = csv.reader(f)
-                headers = next(reader, [])
+            with open(path, "r", encoding="utf-8-sig") as f:
+                # Read first line and clean EVERYTHING
+                first_line = f.readline()
+                headers = [h.strip() for h in first_line.split(",")]
+                # Remove BOM, zero-width spaces, etc.
+                clean_headers = []
+                for h in headers:
+                    h = h.replace("\ufeff", "").replace("\u200b", "").strip()
+                    clean_headers.append(h if h else "EMPTY")
 
-                if not headers:
-                    print("CSV is empty or has no headers")
-                    return
+                self.id_combo["values"] = clean_headers
 
-                self.id_combo["values"] = headers
-
-                # PRIORITY LIST — exact match first, then contains
-                priority_exact = ["Room ID", "room_id", "RoomID", "Tag", "Code", "ID", "Asset No"]
-                priority_contains = ["room", "tag", "code", "id", "asset", "no"]
-
-                likely = headers[0]  # safe fallback
-
-                # First: exact match
-                for col in priority_exact:
-                    if col in headers:
-                        likely = col
+                # FORCE select "Room ID" even if it's written weird
+                target = "Room ID"
+                found = False
+                for i, h in enumerate(clean_headers):
+                    if target.lower() in h.lower() or "room" in h.lower():
+                        self.id_var.set(clean_headers[i])
+                        print(f"FORCED identifier → '{clean_headers[i]}'")
+                        found = True
                         break
-                else:
-                    # Second: contains keyword
-                    for col in headers:
-                        col_lower = col.lower()
-                        if any(kw in col_lower for kw in priority_contains):
-                            likely = col
-                            break
-
-                self.id_var.set(likely)
-                print(f"Smart-selected identifier column → '{likely}'")
+                if not found:
+                    self.id_var.set(clean_headers[0])
+                    print(f"Fallback → '{clean_headers[0]}'")
 
         except Exception as e:
-            print(f"Could not read CSV headers: {e}")
-            messagebox.showerror("CSV Error", f"Failed to read headers:\n{e}")
+            print(f"Error: {e}")
 
     def run(self):
         action = self.action_var.get()
@@ -473,7 +464,7 @@ class App:
         print("=== TEST COMPLETE — FUNCTION WORKS ===")
         messagebox.showinfo("Test OK", "Button + function work! Ready for real archive.")
 
-#
+
     def export_all_with_page_id(self):
         """FINAL EXPORT — EVERY PROPERTY TYPE PERFECT: multi-select, person, checkbox, email, relation..."""
         db_name = self.db_var.get()
@@ -552,12 +543,14 @@ class App:
 
                     # MULTI_SELECT
                     if ptype == "multi_select":
-                        tags = [item["name"] for item in p.get("multi_select", []) if "name" in item]
+                        multi_data = props.get("multi_select")
+                        tags = [item["name"] for item in multi_data or [] if "name" in item]
                         row[col] = ", ".join(tags)
 
                     # PERSON
                     elif ptype == "people":
-                        names = [u["name"] for u in p.get("people", []) if "name" in u]
+                        people_data = props.get("people")
+                        names = [u["name"] for u in people_data or [] if "name" in u]
                         row[col] = ", ".join(names)
 
                     # CHECKBOX
@@ -570,17 +563,23 @@ class App:
 
                     # SELECT
                     elif ptype == "select":
-                        row[col] = p.get("select", {}).get("name", "")
-
+                        select_data = props.get("select")
+                        row[col] = select_data.get("name", "") if select_data is not None else ""
+    
                     # RICH_TEXT / TEXT
                     elif ptype in ["rich_text", "text"]:
-                        texts = [t["plain_text"] for t in p.get("rich_text", [])]
+                        rich_data = props.get("rich_text")
+                        texts = [t["plain_text"] for t in rich_data or []]
                         row[col] = " ".join(texts)
+                        #texts = [t["plain_text"] for t in p.get("rich_text", [])]
+                        #row[col] = " ".join(texts)
 
                     # DATE
                     elif ptype == "date":
-                        d = p.get("date", {})
-                        row[col] = d.get("start", "") if d else ""
+                        date_data = props.get("date")
+                        row[col] = date_data.get("start", "") if date_data is not None else ""
+                        #d = p.get("date", {})
+                        #row[col] = d.get("start", "") if d else ""
 
                     # RELATION
                     elif ptype == "relation":

@@ -15,12 +15,18 @@ def sync_csv_to_notion(csv_path, token, db_id, id_col):
     print(f"=== SYNC EVERYTHING STARTED (identifier: {id_col}) ===")
     created = updated = skipped = not_found = 0
 
-    with open(csv_path, encoding="utf-8") as f:
+    with open(csv_path, encoding="utf-8-sig") as f: # BOM safe, revised [utf-8] to [utf-8-sig] Dec 12 by AntiGrav
         rows = list(csv.DictReader(f))
 
     for i, row in enumerate(rows, 1):
-        identifier = (row.get(id_col) or "").strip()
-        if not identifier:
+        # Get value — safe from None, empty, spaces
+        raw = row.get(id_col, "")
+        if raw is None:
+            raw = ""
+        identifier = str(raw).strip()
+        #identifier = (row.get(id_col) or "").strip()
+        if not identifier or identifier == "" or identifier.isspace():
+        #if not identifier:
             print(f"[{i}] No identifier → skipped")
             skipped += 1
             continue
