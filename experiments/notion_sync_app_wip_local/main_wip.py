@@ -59,6 +59,28 @@ class App:
         ttk.Entry(f3, textvariable=self.csv_var, width=70).pack(side="left", padx=10, pady=8)
         ttk.Button(f3, text="Browse", command=self.browse_csv).pack(side="right", padx=10)
 
+        # RELATION BY MATCHING TEXT — two dropdowns only
+        rel_frame = ttk.LabelFrame(self.root, text="Link Tables by Matching Text")
+        rel_frame.pack(fill="x", padx=20, pady=8)
+
+        ttk.Label(rel_frame, text="Source table ID property:").grid(row=0, column=0, sticky="w", pady=2)
+        ttk.Label(rel_frame, text="Target table ID property:").grid(row=1, column=0, sticky="w", pady=2)
+
+        self.source_id_var = tk.StringVar()
+        self.target_id_var = tk.StringVar()
+
+        self.source_combo = ttk.Combobox(rel_frame, textvariable=self.source_id_var, state="readonly", width=30)
+        self.target_combo = ttk.Combobox(rel_frame, textvariable=self.target_id_var, state="readonly", width=30)
+
+        self.source_combo.grid(row=0, column=1, padx=(10, 0), pady=2, sticky="w")
+        self.target_combo.grid(row=1, column=1, padx=(10, 0), pady=2, sticky="w")
+
+        ttk.Button(
+            rel_frame,
+            text="Link by Matching ID",
+            command=self.archive_pages_in_csv # fake, pending for function
+        ).grid(row=0, column=2, rowspan=2, padx=20, sticky="ns")
+        
         # 3b. CSV Match Column — AUTO-FILLED from CSV headers (never wrong again)
         f3b = ttk.LabelFrame(self.root, text="CSV Identifier Column (which column contains the unique ID?)")
         f3b.pack(fill="x", padx=15, pady=5)
@@ -72,21 +94,21 @@ class App:
 
         # YOUR REAL BUTTON — "Archive pages that ARE in this CSV"
         
-        ttk.Separator(self.root, orient="horizontal").pack(fill="x", pady=10)
-        delete_frame = ttk.Frame(self.root)
-        delete_frame.pack(pady=5)
+        #ttk.Separator(self.root, orient="horizontal").pack(fill="x", pady=10)
+        #delete_frame = ttk.Frame(self.root)
+        #delete_frame.pack(pady=5)
 
-        ttk.Label(delete_frame, text="ARCHIVE LIST MODE", foreground="#d32f2f", font=("Segoe UI", 11, "bold")).pack(side="left", padx=10)
-        ttk.Button(
-            delete_frame,
-            text="Archive Pages THAT ARE in Current CSV",
-            command=self.archive_pages_in_csv,
-            style="Accent.TButton"
-        ).pack(side="left", padx=5)
-        ttk.Label(delete_frame, 
-            text="Use a CSV with the exact pages you want to archive (safe & precise)", 
-            foreground="gray", font=("Segoe UI", 9, "italic")
-        ).pack(side="left", padx=20)
+        #ttk.Label(delete_frame, text="ARCHIVE LIST MODE", foreground="#d32f2f", font=("Segoe UI", 11, "bold")).pack(side="left", padx=10)
+        #ttk.Button(
+        #    delete_frame,
+        #    text="Archive Pages THAT ARE in Current CSV",
+        #    command=self.archive_pages_in_csv,
+        #    style="Accent.TButton"
+        #).pack(side="left", padx=5)
+        #ttk.Label(delete_frame, 
+        #    text="Use a CSV with the exact pages you want to archive (safe & precise)", 
+        #    foreground="gray", font=("Segoe UI", 9, "italic")
+        #).pack(side="left", padx=20)
 
         # 4. Action
         f4 = ttk.LabelFrame(self.root, text="4. Choose Action")
@@ -112,12 +134,35 @@ class App:
         self.prop_combo.pack(fill="x", padx=10, pady=8)
 
         # Run Button
-        ttk.Button(self.root, text="RUN ACTION", command=self.run, style="Accent.TButton").pack(pady=18)
+        #ttk.Button(self.root, text="RUN ACTION", command=self.run, style="Accent.TButton").pack(pady=18)
+        # COMPACT ACTION BAR — Run and Archive side by side
+        action_bar = ttk.Frame(self.root)
+        action_bar.pack(fill="x", padx=20, pady=10)
 
+        ttk.Button(
+            action_bar,
+            text="RUN ACTION",
+            command=self.run,
+            style="Accent.TButton"
+        ).pack(side="left")
+
+        ttk.Button(
+            action_bar,
+            text="Archive Pages in Current CSV",
+            command=self.archive_pages_in_csv,
+            style="Danger.TButton"
+        ).pack(side="left", padx=(15, 0))
         # Log
         logf = ttk.LabelFrame(self.root, text="Log Output-Watch everything here")
         logf.pack(fill="both", expand=True, padx=15, pady=10)
-        
+        log_f = ttk.LabelFrame(self.root, text="Log Output")
+        log_f.pack(fill="both", expand=True, padx=20, pady=(0, 15))
+
+        self.log = tk.Text(log_f, wrap="word", font=("Consolas", 10))
+        self.log.pack(side="left", fill="both", expand=True)
+        scrollbar = ttk.Scrollbar(log_f, command=self.log.yview)
+        scrollbar.pack(side="right", fill="y")
+        self.log.configure(yscrollcommand=scrollbar.set)
 
         self.log = tk.Text(logf, wrap="word", font=("Consolas", 10))
         self.log.pack(side="left", fill="both", expand=True)
