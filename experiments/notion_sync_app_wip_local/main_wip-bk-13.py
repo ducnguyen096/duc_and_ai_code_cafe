@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.dirname(__file__))   # ← THIS LINE FIXES EVERYTHING
 
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox, simpledialog
+from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
 import csv
 
@@ -33,8 +33,7 @@ class App:
         self.root.minsize(800, 600)
         self.setup_ui()
         self.notion_title_prop = "Name"  # will be auto update
-        self.source_db_var = tk.StringVar()
-        self.target_db_var = tk.StringVar()
+
     def setup_ui(self):
         style = ttk.Style()
         style.theme_use("clam")
@@ -60,32 +59,6 @@ class App:
         ttk.Entry(f3, textvariable=self.csv_var, width=70).pack(side="left", padx=10, pady=8)
         ttk.Button(f3, text="Browse", command=self.browse_csv).pack(side="right", padx=10)
 
-        # RELATION BY MATCHING TEXT — two dropdowns only
-        rel_frame = ttk.LabelFrame(self.root, text="Link Tables by Matching Text")
-        rel_frame.pack(fill="x", padx=20, pady=8)
-
-        ttk.Label(rel_frame, text="Source table ID property:").grid(row=0, column=0, sticky="w", pady=2)
-        ttk.Label(rel_frame, text="Target table ID property:").grid(row=1, column=0, sticky="w", pady=2)
-
-        self.source_db_var = tk.StringVar()
-        self.target_db_var = tk.StringVar()
-
-        self.source_combo = ttk.Combobox(rel_frame, textvariable=self.source_db_var, state="readonly", width=30)
-        self.target_combo = ttk.Combobox(rel_frame, textvariable=self.target_db_var, state="readonly", width=30)
-
-        self.source_combo.grid(row=0, column=1, padx=(10, 0), pady=2, sticky="w")
-        self.target_combo.grid(row=1, column=1, padx=(10, 0), pady=2, sticky="w")
-
-        ttk.Button(
-            rel_frame,
-            text="Link by Matching ID",
-            command=self.link_by_matching_text # linked with link_by_matching_text function Dec 13
-        ).grid(row=0, column=2, rowspan=2, padx=20, sticky="ns")
-        
-        # Update databases dropdowns when config is loaded
-        self.source_combo.bind("<<ComboboxSelected>>", lambda e: self.update_id_dropdowns())
-        self.target_combo.bind("<<ComboboxSelected>>", lambda e: self.update_id_dropdowns())        
-
         # 3b. CSV Match Column — AUTO-FILLED from CSV headers (never wrong again)
         f3b = ttk.LabelFrame(self.root, text="CSV Identifier Column (which column contains the unique ID?)")
         f3b.pack(fill="x", padx=15, pady=5)
@@ -99,23 +72,21 @@ class App:
 
         # YOUR REAL BUTTON — "Archive pages that ARE in this CSV"
         
-        #ttk.Separator(self.root, orient="horizontal").pack(fill="x", pady=10)
-        #delete_frame = ttk.Frame(self.root)
-        #delete_frame.pack(pady=5)
+        ttk.Separator(self.root, orient="horizontal").pack(fill="x", pady=10)
+        delete_frame = ttk.Frame(self.root)
+        delete_frame.pack(pady=5)
 
-        #ttk.Label(delete_frame, text="ARCHIVE LIST MODE", foreground="#d32f2f", font=("Segoe UI", 11, "bold")).pack(side="left", padx=10)
-        #ttk.Button(
-        #    delete_frame,
-        #    text="Archive Pages THAT ARE in Current CSV",
-        #    command=self.archive_pages_in_csv,
-        #    style="Accent.TButton"
-        #).pack(side="left", padx=5)
-        #ttk.Label(delete_frame, 
-        #    text="Use a CSV with the exact pages you want to archive (safe & precise)", 
-        #    foreground="gray", font=("Segoe UI", 9, "italic")
-        #).pack(side="left", padx=20)
-
-
+        ttk.Label(delete_frame, text="ARCHIVE LIST MODE", foreground="#d32f2f", font=("Segoe UI", 11, "bold")).pack(side="left", padx=10)
+        ttk.Button(
+            delete_frame,
+            text="Archive Pages THAT ARE in Current CSV",
+            command=self.archive_pages_in_csv,
+            style="Accent.TButton"
+        ).pack(side="left", padx=5)
+        ttk.Label(delete_frame, 
+            text="Use a CSV with the exact pages you want to archive (safe & precise)", 
+            foreground="gray", font=("Segoe UI", 9, "italic")
+        ).pack(side="left", padx=20)
 
         # 4. Action
         f4 = ttk.LabelFrame(self.root, text="4. Choose Action")
@@ -141,35 +112,12 @@ class App:
         self.prop_combo.pack(fill="x", padx=10, pady=8)
 
         # Run Button
-        #ttk.Button(self.root, text="RUN ACTION", command=self.run, style="Accent.TButton").pack(pady=18)
-        # COMPACT ACTION BAR — Run and Archive side by side
-        action_bar = ttk.Frame(self.root)
-        action_bar.pack(fill="x", padx=20, pady=10)
+        ttk.Button(self.root, text="RUN ACTION", command=self.run, style="Accent.TButton").pack(pady=18)
 
-        ttk.Button(
-            action_bar,
-            text="RUN ACTION",
-            command=self.run,
-            style="Accent.TButton"
-        ).pack(side="left")
-
-        ttk.Button(
-            action_bar,
-            text="Archive Pages in Current CSV",
-            command=self.archive_pages_in_csv,
-            style="Danger.TButton"
-        ).pack(side="left", padx=(15, 0))
         # Log
         logf = ttk.LabelFrame(self.root, text="Log Output-Watch everything here")
         logf.pack(fill="both", expand=True, padx=15, pady=10)
-        log_f = ttk.LabelFrame(self.root, text="Log Output")
-        log_f.pack(fill="both", expand=True, padx=20, pady=(0, 15))
-
-        self.log = tk.Text(log_f, wrap="word", font=("Consolas", 10))
-        self.log.pack(side="left", fill="both", expand=True)
-        scrollbar = ttk.Scrollbar(log_f, command=self.log.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.log.configure(yscrollcommand=scrollbar.set)
+        
 
         self.log = tk.Text(logf, wrap="word", font=("Consolas", 10))
         self.log.pack(side="left", fill="both", expand=True)
@@ -203,8 +151,6 @@ class App:
         self.db_combo["values"] = ["(loading...)"]
         self.root.update()
 
-        self.update_id_dropdowns()  # ← initial fill
-
         if not self.config_path or not self.config_path.exists():
             print("Config file not found")
             return
@@ -229,7 +175,6 @@ class App:
                 print("No valid databases in CSV")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to read config:\n{e}")
-            
 
     def on_db_change(self, *args):
         name = self.db_var.get()
@@ -267,24 +212,6 @@ class App:
             self.prop_combo.current(0)
             print(f"Found {len(multi_selects)} multi-select properties")        
 #
-        # Get schema for current DB and populate ID dropdowns
-        current_db = self.db_var.get()
-        if current_db and current_db in self.databases:
-            db_id = self.databases[current_db]["db_id"]
-            token = self.databases[current_db]["token"]
-            schema_resp = requests.get(
-                f"https://api.notion.com/v1/databases/{db_id}",
-                headers={"Authorization": f"Bearer {token}", "Notion-Version": "2022-06-28"}
-            )
-            if schema_resp.status_code == 200:
-                props = schema_resp.json()["properties"]
-                text_props = [n for n, p in props.items() if p["type"] in ["title", "rich_text", "text"]]
-                if text_props:
-                    self.source_db_var.set(text_props[0])
-                    self.target_db_var.set(text_props[0])
-#
-
-
     def browse_csv(self):
         path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
         if not path:
@@ -537,6 +464,7 @@ class App:
         print("=== TEST COMPLETE — FUNCTION WORKS ===")
         messagebox.showinfo("Test OK", "Button + function work! Ready for real archive.")
 
+
     def export_all_with_page_id(self):
         """FINAL EXPORT — EVERY PROPERTY TYPE PERFECT: multi-select, person, checkbox, email, relation..."""
         db_name = self.db_var.get()
@@ -781,158 +709,6 @@ class App:
 
         messagebox.showinfo("DONE", f"Updated {success}/{len(updates)} pages")
         print("=== UPDATE COMPLETE ===")
-
-    # New Fucntion Set relation by matching text
-
-    def link_by_matching_text(self):
-        """Link two databases by matching text — 100% working, no 'r not defined'"""
-        # Get source DB
-        source_db_name = self.source_db_var.get()
-        if not source_db_name or source_db_name not in self.databases:
-            messagebox.showerror("Error", "Select Source Database")
-            return
-
-        # Get target DB
-        target_db_name = self.target_db_var.get()
-        if not target_db_name or target_db_name not in self.databases:
-            messagebox.showerror("Error", "Select Target Database")
-            return
-
-        # Ask for properties
-        source_prop = simpledialog.askstring("Source Property", "Property in Source DB with matching text (e.g. Room ID):")
-        if not source_prop:
-            return
-        target_prop = simpledialog.askstring("Target Property", "Property in Target DB with matching text (e.g. Room ID):")
-        if not target_prop:
-            return
-        target_relation = simpledialog.askstring("Relation Property", "Relation property name in Target DB:")
-        if not target_relation:
-            return
-
-        source_token = self.databases[source_db_name]["token"]
-        source_db_id = self.databases[source_db_name]["db_id"]
-        target_token = self.databases[target_db_name]["token"]
-        target_db_id = self.databases[target_db_name]["db_id"]
-
-        headers = {
-            "Authorization": f"Bearer {target_token}",
-            "Notion-Version": "2022-06-28",
-            "Content-Type": "application/json"
-        }
-
-        # 1. Build source map: text → page_id
-        print("Building source map...")
-        source_map = {}
-        cursor = None
-        while True:
-            payload = {"page_size": 100}
-            if cursor:
-                payload["start_cursor"] = cursor
-            source_resp = requests.post(f"https://api.notion.com/v1/databases/{source_db_id}/query", json=payload, headers={"Authorization": f"Bearer {source_token}", "Notion-Version": "2022-06-28"})
-            source_data = source_resp.json()
-            for page in source_data.get("results", []):
-                props = page["properties"]
-                if source_prop in props:
-                    prop_val = props[source_prop]
-                    if prop_val.get("rich_text"):
-                        text = prop_val["rich_text"][0]["plain_text"].strip()
-                    elif prop_val.get("title"):
-                        text = prop_val["title"][0]["plain_text"].strip()
-                    else:
-                        text = ""
-                    if text:
-                        source_map[text] = page["id"]
-            cursor = source_data.get("next_cursor")
-            if not cursor:
-                break
-            time.sleep(0.35)
-
-        if not source_map:
-            messagebox.showinfo("Nothing", "No matching text found in Source DB")
-            return
-
-        print(f"Source map built — {len(source_map)} entries")
-
-        # 2. Update target pages
-        linked = 0
-        cursor = None
-        while True:
-            payload = {"page_size": 100}
-            if cursor:
-                payload["start_cursor"] = cursor
-            target_resp = requests.post(f"https://api.notion.com/v1/databases/{target_db_id}/query", json=payload, headers=headers)
-            target_data = target_resp.json()
-            batch = target_data.get("results", [])
-            if not batch and not cursor:
-                break
-
-            for page in batch:
-                props = page["properties"]
-                if target_prop in props:
-                    prop_val = props[target_prop]
-                    if prop_val.get("rich_text"):
-                        match_text = prop_val["rich_text"][0]["plain_text"].strip()
-                    elif prop_val.get("title"):
-                        match_text = prop_val["title"][0]["plain_text"].strip()
-                    else:
-                        match_text = ""
-                    if match_text in source_map:
-                        target_id = source_map[match_text]
-                        patch_payload = {
-                            "properties": {
-                                target_relation: {
-                                    "relation": [{"id": target_id}]
-                                }
-                            }
-                        }
-                        patch_resp = requests.patch(f"https://api.notion.com/v1/pages/{page['id']}", json=patch_payload, headers=headers)
-                        if patch_resp.status_code == 200:
-                            print(f"LINKED → {match_text}")
-                            linked += 1
-                        else:
-                            print(f"FAILED → {match_text} ({patch_resp.status_code})")
-                time.sleep(0.35)
-
-            cursor = target_data.get("next_cursor")
-            if not cursor:
-                break
-
-        messagebox.showinfo("DONE", f"Linked {linked} pages")
-        print("=== RELATION LINKING COMPLETE ===")
-
-    # New Function update_id_dropdowns
-    def update_id_dropdowns(self):
-        """Fill Source and Target ID dropdowns with text/title properties from selected DBs"""
-        # Source DB
-        source_db = self.source_db_var.get()
-        source_props = []
-        if source_db in self.databases:
-            db_id = self.databases[source_db]["db_id"]
-            token = self.databases[source_db]["token"]
-            r = requests.get(f"https://api.notion.com/v1/databases/{db_id}", headers={"Authorization": f"Bearer {token}", "Notion-Version": "2022-06-28"})
-            if r.status_code == 200:
-                props = r.json()["properties"]
-                source_props = [name for name, p in props.items() if p["type"] in ["title", "rich_text", "text"]]
-
-        self.source_combo["values"] = source_props
-        if source_props:
-            self.source_db_var.set(source_props[0])
-
-        # Target DB
-        target_db = self.target_db_var.get()
-        target_props = []
-        if target_db in self.databases:
-            db_id = self.databases[target_db]["db_id"]
-            token = self.databases[target_db]["token"]
-            r = requests.get(f"https://api.notion.com/v1/databases/{db_id}", headers={"Authorization": f"Bearer {token}", "Notion-Version": "2022-06-28"})
-            if r.status_code == 200:
-                props = r.json()["properties"]
-                target_props = [name for name, p in props.items() if p["type"] in ["title", "rich_text", "text"]]
-
-        self.target_combo["values"] = target_props
-        if target_props:
-            self.target_db_var.set(target_props[0])
-
 
 if __name__ == "__main__":
     root = tk.Tk()
