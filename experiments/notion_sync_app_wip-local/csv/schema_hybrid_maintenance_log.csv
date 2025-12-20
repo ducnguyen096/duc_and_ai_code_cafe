@@ -1,8 +1,0 @@
-Property,Type
-Tag,Relation (MEP Equipment)
-Inspection Date,Date
-Service Notes,Text
-Spare Parts Used,Text
-Next Scheduled Maintenance,Date
-Technician,Person
-Vendor,Relation (Vendors & Contacts)

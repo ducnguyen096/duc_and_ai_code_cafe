@@ -1,8 +1,0 @@
-Property,Type
-Company Name,Text
-Contact Person,Text
-Phone,Phone
-Email,Email
-Services Provided,Multi-select
-Relation: MEP Equipment,Relation
-Relation: Maintenance Logs,Relation

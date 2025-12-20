@@ -1,9 +1,0 @@
-Column,Type
-Room ID,title
-Local Name,text
-Global Name,text
-Floor,select
-Usable Area (m²),number
-Clean Class,select
-Remarks,text
-Project,text
